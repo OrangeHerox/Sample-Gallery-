@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GRID GALLERY</title>
+  <style>
+    body {
+      background-color: black;
+      color: white;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: 100%;
+      grid-template-rows: 30px 400px 50px;
+    }
+
+    .search-bar>input {
+      width: 100%;
+      height: 100%;
+      border-radius: 15px;
+      border: 0;
+      background-color: #34353D;
+      color: white;
+      padding-left: 5px;
+    }
+
+    .header {
+      display: grid;
+      grid-template-columns: 50% 50%;
+    }
+
+    .photos {
+      display: grid;
+      grid-template-columns: 110px 110px 110px;
+      gap: 3px;
+    }
+
+    .photos>p {
+      grid-column: 1/4;
+      margin-left: 25%;
+      color: red;
+    }
+
+    .photos>img {
+      width: 100%;
+      height: 100%;
+    }
+
+    #about {
+      position: relative;
+      margin-left: 25%;
+    }
+
+    #aboutCont {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      visibility: hidden;
+    }
+
+    .footer>p {
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="search-bar">
+      <input type="search" placeholder="Search Title" id="search">
+    </div>
+    <div class="header">
+      <div class="photos">
+        <p id="photos">Photos</p>
+        <img src="0.png" alt="0.png">
+        <img src="1.png" alt="1.png">
+        <img src="2.png" alt="2.png">
+        <img src="3.png" alt="3.png">
+        <img src="4.png" alt="4.png">
+      </div>
+      <div class="about">
+        <p id="about">About</p>
+        <p id="aboutCont">This is a sample gallery made with grid layout
+          as a practice.
+        </p>
+      </div>
+    </div>
+    <div class="footer">
+      <p id="foot">5 photos, 0 videos</p>
+    </div>
+  </div>
+
+  <script>
+    var images = document.getElementsByTagName("img");
+    var search = document.getElementById("search");
+    var c = true;
+
+    var photos = document.getElementById("photos");
+    var about = document.getElementById("about");
+    var abct = document.getElementById("aboutCont");
+    var foot = document.getElementById("foot");
+
+    photos.addEventListener("click", showImages);
+    about.addEventListener("click", hideImages);
+    search.addEventListener("change", showSearch);
+
+    var a = false;
+    var b = false;
+    var c = false;
+    var d = false;
+    var e = false;
+    var i = 0;
+
+    images[0].addEventListener("click", photo1);
+    images[1].addEventListener("click", photo2);
+    images[2].addEventListener("click", photo3);
+    images[3].addEventListener("click", photo4);
+    images[4].addEventListener("click", photo5);
+
+    function cantClick(i, bool) {
+      for (let j = 0; j < images.length; j++) {
+        if (i == j) {
+          continue;
+        } else {
+          if (!bool) {
+            images[j].style.visibility = "hidden";
+          } else {
+            images[j].style.visibility = "visible";
+          }
+        }
+      }
+    }
+
+    function AlrClicked(i) {
+      switch (i) {
+        case 0:
+          grids("1/2", "2/3", i);
+          break;
+        case 1:
+          grids("2/3", "2/3", i);
+          break;
+        case 2:
+          grids("3/4", "2/3", i);
+          break;
+        case 3:
+          grids("1/2", "3/4", i);
+          break;
+        case 4:
+          grids("2/3", "3/4", i);
+          break;
+      }
+    }
+
+    function grids(col, row, i) {
+      images[i].style.gridColumn = col;
+      images[i].style.gridRow = row;
+    }
+
+    function showIndiv(i) {
+      var col = "1/4",
+        row = "2/4";
+      grids(col, row, i);
+      hide(foot);
+    }
+
+    function showImages() {
+      c = true;
+      counter(c);
+      red(photos);
+      white(about);
+      hide(abct);
+      show(foot);
+    }
+
+    function hideImages() {
+      c = false;
+      counter(c);
+      white(photos);
+      red(about);
+      show(abct);
+      hide(foot);
+      search.value = "";
+      foot.innerHTML = "5 photos, 0 video";
+    }
+
+    function showSearch() {
+      for (let i = 0; i < images.length; i++) {
+        hide(images[i]);
+      }
+      switch (search.value) {
+        case 'Curriculum Vitae':
+          show(images[0]);
+          foot.innerHTML = "1 photo, 0 video";
+          break;
+        case 'Schedule':
+          show(images[1]);
+          foot.innerHTML = "1 photo, 0 video";
+          break;
+        case 'Layout':
+          show(images[2]);
+          foot.innerHTML = "1 photo, 0 video";
+          break;
+        case 'Hard Disk':
+          show(images[3]);
+          foot.innerHTML = "1 photo, 0 video";
+          break;
+        case 'Cover':
+          show(images[4]);
+          foot.innerHTML = "1 photo, 0 video";
+          break;
+        case '':
+          for (let i = 0; i < images.length; i++) {
+            show(images[i]);
+            foot.innerHTML = "5 photos, 0 videos";
+          }
+          break;
+        default:
+          foot.innerHTML = "NO RESULT, TRY SEARCHING FOR OTHER KEYWORD";
+      }
+    }
+
+    function counter(c) {
+      for (let i = 0; i < images.length; i++) {
+        if (c) {
+          show(images[i]);
+        } else {
+          hide(images[i]);
+        }
+      }
+    }
+
+    function hide(el) {
+      el.style.visibility = "hidden";
+    }
+
+    function show(el) {
+      el.style.visibility = "visible";
+    }
+
+    function red(el) {
+      el.style.color = "red";
+    }
+
+    function white(el) {
+      el.style.color = "white";
+    }
+
+    function photo1() {
+      showIndiv(i = 0);
+      cantClick(i, a);
+      if (a) {
+        AlrClicked(i = 0);
+        show(foot);
+        cantClick(i, a);
+        return a = false;
+      }
+      a = true;
+    }
+
+    function photo2() {
+      showIndiv(i = 1);
+      cantClick(i, b);
+      if (b) {
+        AlrClicked(i = 1);
+        cantClick(i, b);
+        return b = false;
+      }
+      b = true;
+    }
+
+    function photo3() {
+      showIndiv(i = 2);
+      cantClick(i, c);
+      if (c) {
+        AlrClicked(i = 2);
+        cantClick(i, c);
+        return c = false;
+      }
+      c = true;
+    }
+
+
+    function photo4() {
+      showIndiv(i = 3);
+      cantClick(i, d);
+      if (d) {
+        AlrClicked(i = 3);
+        cantClick(i, d);
+        return d = false;
+      }
+      d = true;
+    }
+
+    function photo5() {
+      showIndiv(i = 4);
+      cantClick(i, e);
+      if (e) {
+        AlrClicked(i = 4);
+        cantClick(i, e);
+        return e = false;
+      }
+      e = true;
+    }
+  </script>
+</body>
+
+</html>
